@@ -19,7 +19,8 @@ class UsuarioController
 
 	public function buscarPor($id)
 	{
-		$sql = "SELECT * from usuario where email = $id";
+		$sql = "SELECT * from usuario 
+				where email = '$id'";
 		return $this->myquery($sql);	
 	}
 
@@ -63,6 +64,6 @@ class UsuarioController
 		else
 			return 0;	
 	}
-};cho
+};
 
 ?>
