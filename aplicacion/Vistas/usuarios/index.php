@@ -1,4 +1,8 @@
 <?php 
+	session_start();
+	if(!isset($_SESSION['user']))
+        header('Location:../');
+
 	include ("../rutas/web.php");
 	$obj = new UsuarioController();
 	$usuarios = $obj->listar();
@@ -15,12 +19,17 @@
 <body>
 	<h1>Bienvenido a la Aplicacion</h1>
 	<hr>
+
+<p>
+	Bienvenido: <?php echo $_SESSION['user']->nombre ?>   || rol: <?php echo $_SESSION['user']->rol ?>
+</p>
+<a href="../">Salir del sistema</a>
 	
 	<p>
 		Buscar: <input type="text">
-		<a href="" > + Nuevo Usuario</a>
+		<a href="create.php" > + Nuevo Usuario</a>
 		<table width="100%" border="1" >
-			<tusuariosr>
+			<tr>
 				<th>Email</th>
 				<th>Nombre</th>
 				<th>Celular</th>
@@ -40,8 +49,22 @@
 			<td>
 <a href="show.php?email=<?php echo $f->email ?>">Ver</a>
 			</td>
-			<td>Editar</td>
-			<td>Eliminar</td>
+			<td>
+
+<?php if($_SESSION['user']->rol != "Lector"): ?>
+<a href="update.php?email=<?php echo $f->email ?>">Editar</a>
+<?php endif; ?>
+
+			</td>
+			<td>
+
+<?php if($_SESSION['user']->rol != "Lector"): ?>
+<a onclick="return confirm('Seguro que quiere eliminar el registro?')"
+   href="delete.php?email=<?php echo $f->email ?>">
+Eliminar
+</a>
+<?php endif; ?>
+			</td>
 		</tr>
 
 <?php endwhile; ?>

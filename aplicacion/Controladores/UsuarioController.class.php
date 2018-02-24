@@ -1,4 +1,6 @@
 <?php 
+session_start();
+
 class UsuarioController
 {
 	private function myquery($sql)
@@ -38,16 +40,16 @@ class UsuarioController
 
 	public function eliminar($id)
 	{
-		$sql = "DELETE FROM usuario where email = $id";
+		$sql = "DELETE FROM usuario where email = '$id'";
 		return $this->myquery($sql);	
 	}
 
 	public function modificar(Usuario $reg, $id)
 	{
-		$sql = " UPDATE usuario SET 
+		$sql = "UPDATE usuario SET 
 				 nombre = '$reg->nombre',
 				 celular = '$reg->celular'
-				 where email = $id  ";
+				 where email = '$id' ";
 		return $this->myquery($sql);	
 	}
 
@@ -60,7 +62,10 @@ class UsuarioController
 		$res = $this->myquery($sql);
 
 		if(mysqli_num_rows($res) > 0)
+		{
+			$_SESSION['user'] = $res->fetch_object();
 			return 1;
+		}
 		else
 			return 0;	
 	}
